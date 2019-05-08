@@ -2,17 +2,19 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
+
+# ymlの記法などは https://qiita.com/mczkzk/items/7be753dc221c2f049670 を参照
 version: 2
+
+# orbを使うなら https://circleci.com/orbs/registry/orb/circleci/gradle あたりを使ってもよい。これを使うと勝手にビルドとかやってくれる感じ？
+# orbs:
+#   gradle: circleci/gradle@1.0.11
+
 jobs:
   build:
     docker:
-      # specify the version you desire here
+    # gradleを使ってうんぬんは、これを入れておけばOK
       - image: circleci/openjdk:8-jdk
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
 
@@ -22,23 +24,29 @@ jobs:
     #   TERM: dumb
 
     steps:
-      - checkout
+        - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+        # キャッシュを取り込む
+        - restore_cache:
+            keys:
+                # https://circleci.com/docs/2.0/configuration-reference/#save_cache このあたりの記法に従って記述。 {{ hoge }} はデフォルト定義されている変数
+                - v1-dependencies-{{ checksum "build.gradle" }}
+                # fallback to using the latest cache if no exact match is found
+                - v1-dependencies-
 
-      - run: gradle dependencies
-      - run: gradle build -x test
+        # 依存関係取り込み
+        - run: gradle dependencies
 
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+        # テストはなしでビルドだけを実行する
+        - run: gradle build -x test
 
-      - run: 
-            name: execute test
-            command: gradle test
+        # キャッシュに保存
+        - save_cache:
+            paths:
+                - ~/.gradle
+            key: v1-dependencies-{{ checksum "build.gradle" }}
+
+        # テスト
+        - run: 
+                name: execute test
+                command: gradle test
