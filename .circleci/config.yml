@@ -1,25 +1,42 @@
-version: 2.1
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk
 
-orbs:
-    gradle: circleci/gradle@1.0.11
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
 
-workflows:
-    build-and-test:
-        jobs:
-            build:
-                working_directory: ~/project
-                steps:
-                    - checkout- restore_cache:
-                        keys:
-                            - v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
-                            - v1-dependencies-{{ .Branch }}-
-                            - v1-dependencies-
-                    - run: gradle dependencies
-                    - run: gradle build -x test
-                    - save_cache:
-                        paths:
-                            - ~/.gradle
-                        key: v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
-                    - run: 
-                        name: execute test
-                        command: gradle test
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: gradle dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      # run tests!
+      - run: gradle test
