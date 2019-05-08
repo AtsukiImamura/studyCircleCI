@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+    gradle: circleci/gradle@1.0.11
+
+workflows:
+    build-and-test:
+        jobs:
+            build:
+                working_directory: ~/project
+                steps:
+                    - checkout- restore_cache:
+                        keys:
+                            - v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
+                            - v1-dependencies-{{ .Branch }}-
+                            - v1-dependencies-
+                    - run: gradle dependencies
+                    - run: gradle build -x test
+                    - save_cache:
+                        paths:
+                            - ~/.gradle
+                        key: v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
+                    - run: 
+                        name: execute test
+                        command: gradle test
