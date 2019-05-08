@@ -3,14 +3,11 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2
-orbs:
-    gradle: circleci/gradle@1.0.11
-
 jobs:
   build:
-    # docker:
+    docker:
       # specify the version you desire here
-    #   - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:8-jdk
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -19,10 +16,10 @@ jobs:
 
     working_directory: ~/repo
 
-    environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+    # environment:
+    #   # Customize the JVM maximum heap limit
+    #   JVM_OPTS: -Xmx3200m
+    #   TERM: dumb
 
     steps:
       - checkout
@@ -35,11 +32,13 @@ jobs:
             - v1-dependencies-
 
       - run: gradle dependencies
+      - run: gradle build -x test
 
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      # run tests!
-      - run: gradle test
+      - run: 
+            name: execute test
+            command: gradle test
