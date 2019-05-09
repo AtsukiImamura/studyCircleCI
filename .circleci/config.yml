@@ -61,9 +61,9 @@ jobs:
         - run: 
                 name: execute test
                 command: gradle test
-        - run: 
-            name: hoge
-            command: echo  ブランチ :${CIRCLE_BRANCH} | nkf -WwMQ | sed 's/=$//g' | tr = % | tr -d '\n'
         - run:
             name: report result of test to slack
             command: curl -X POST -H "Content-type:application/json" --data "{'text':'$( echo  ブランチ :${CIRCLE_BRANCH} | nkf -WwMQ | sed 's/=$//g' | tr = % | tr -d '\n')'}" https://hooks.slack.com/services/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
+        - run:
+            name: report result of test to slack
+            command: curl -X POST -H "Content-type:application/json" --data "{'text':'ブランチ${CIRCLE_BRANCH}へのプッシュが成功！'}" https://hooks.slack.com/services/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
