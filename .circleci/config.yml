@@ -50,6 +50,7 @@ jobs:
         - run: 
                 name: execute test
                 command: gradle test
+        - run: &urlencoded echo  Hello, World! ${CIRCLE_BRANCH} | nkf -WwMQ | sed 's/=$//g' | tr = % | tr -d '\n'
         - run:
             name: report result of test to slack
-            command: curl -X POST -H "Content-type:application/json" --data "{'text':'Hello, World! ${CIRCLE_BRANCH}'}" https://hooks.slack.com/services/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
+            command: command: curl -X POST -H "Content-type:application/json" --data "{'text':'Hello, World! ${CIRCLE_BRANCH}'}" https://hooks.slack.com/services/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
