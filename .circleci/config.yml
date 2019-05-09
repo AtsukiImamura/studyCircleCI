@@ -67,5 +67,5 @@ jobs:
 
         - run:
             name: report fail
-            commnad: curl -X POST -H "Content-type:application/json" --data "{'attachments':[{'color':'#ff5500', 'title':'テスト失敗','title_link':'https://circleci.com/gh/AtsukiImamura/studyCircleCI/${CIRCLE_BUILD_NUM}','pretext':'${CIRCLE_USERNAME} のプッシュはテストに失敗しました','fields':[{'title':'リポジトリ','value':'${CIRCLE_PROJECT_REPONAME}','short':false},{'title':'ブランチ','value':'${CIRCLE_BRANCH}','short':false}]}]}" https://hooks.slack.com/services/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
+            command: curl -X POST -H "Content-type:application/json" --data "{'attachments':[{'color':'#ff5500', 'title':'テスト失敗','title_link':'https://circleci.com/gh/AtsukiImamura/studyCircleCI/${CIRCLE_BUILD_NUM}','pretext':'${CIRCLE_USERNAME} のプッシュはテストに失敗しました','fields':[{'title':'リポジトリ','value':'${CIRCLE_PROJECT_REPONAME}','short':false},{'title':'ブランチ','value':'${CIRCLE_BRANCH}','short':false}]}]}" https://hooks.slack.com/services/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
             when: on_fail
