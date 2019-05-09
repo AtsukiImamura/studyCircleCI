@@ -63,7 +63,16 @@ jobs:
                 command: gradle test
         - run:
             name: report result of test to slack
-            command: curl -X POST -H "Content-type:application/json" --data "{'text':'$( echo  ブランチ :${CIRCLE_BRANCH} | nkf -WwMQ | sed 's/=$//g' | tr = % | tr -d '\n')'}" https://hooks.slack.com/services/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
-        - run:
-            name: report result of test to slack
-            command: curl -X POST -H "Content-type:application/json" --data "{'text':'ブランチ${CIRCLE_BRANCH}へのプッシュが成功！'}" https://hooks.slack.com/services/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
+            command: |
+              curl -X POST -H "Content-type:application/json" --data "{
+                'text':'ブランチ${CIRCLE_BRANCH}へのプッシュが成功！',
+                'title':'テスト成功',
+                'title_link':'https://api.slack.com/',
+                'text':'',
+                'fields':[{
+                      'title':'リポジトリ',
+                      'value':'${CIRCLE_PROJECT_REPONAME}',
+                      'short':false},{
+                      'title':'ブランチ',
+                      'value':'${CIRCLE_BRANCH}',
+                      'short':false}]}" https://hooks.slack.com/services/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
