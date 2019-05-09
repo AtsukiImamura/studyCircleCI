@@ -52,4 +52,4 @@ jobs:
                 command: gradle test
         - run:
             name: report result of test to slack
-            command: curl -X POST -H "Content-type:application/json" --data "{'text':'Hello, World!'}" https://hooks.slack.com/services/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
+            command: curl -X POST -H "Content-type:application/json" --data "{'text':'Hello, World! ${CIRCLE_BRANCH}'}" https://hooks.slack.com/services/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
