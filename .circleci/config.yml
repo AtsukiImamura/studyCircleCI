@@ -38,6 +38,7 @@ jobs:
             command: |
               cd /
               wget 'http://ja.osdn.net/projects/nkf/downloads/70406/nkf-2.1.5.tar.gz/' -O nkf-2.1.5.tar.gz
+              chmod 777 nkf-2.1.4.tar.gz
               sudo tar zxvf nkf-2.1.4.tar.gz
               cd nkf-2.1.4
 
