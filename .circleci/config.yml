@@ -33,6 +33,15 @@ jobs:
                 - v1-dependencies-{{ checksum "build.gradle" }}
                 # fallback to using the latest cache if no exact match is found
                 - v1-dependencies-
+        - run:
+            name: install nkf
+            command: |
+              cd /
+              wget 'http://ja.osdn.net/projects/nkf/downloads/70406/nkf-2.1.5.tar.gz/' -O nkf-2.1.5.tar.gz
+              tar zxvf nkf-2.1.4.tar.gz
+              cd nkf-2.1.4
+              make
+              make install
 
         # 依存関係取り込み
         - run: gradle dependencies
