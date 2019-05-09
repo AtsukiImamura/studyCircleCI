@@ -63,7 +63,7 @@ jobs:
                 command: gradle test
         - run:
             name: report result of test to slack
-            command: >-
+            command: >
               curl -X POST -H "Content-type:application/json" --data "{
                 'text':'ブランチ${CIRCLE_BRANCH}へのプッシュが成功！',
                 'title':'テスト成功',
